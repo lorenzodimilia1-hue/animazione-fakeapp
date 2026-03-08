@@ -1,0 +1,2 @@
+# animazione-fakeapp
+.
