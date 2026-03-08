@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="it" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portale Fondi Europei</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+        * {
+            font-family: 'Source Sans 3', sans-serif;
+        }
+        
+        .eu-gradient {
+            background: linear-gradient(135deg, #003399 0%, #001a4d 50%, #000d26 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 51, 153, 0.4);
+        }
+        
+        .card-hover:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+        
+        .star {
+            animation: twinkle 2s ease-in-out infinite;
+        }
+        
+        .star:nth-child(2) { animation-delay: 0.17s; }
+        .star:nth-child(3) { animation-delay: 0.33s; }
+        .star:nth-child(4) { animation-delay: 0.5s; }
+        .star:nth-child(5) { animation-delay: 0.67s; }
+        .star:nth-child(6) { animation-delay: 0.83s; }
+        .star:nth-child(7) { animation-delay: 1s; }
+        .star:nth-child(8) { animation-delay: 1.17s; }
+        .star:nth-child(9) { animation-delay: 1.33s; }
+        .star:nth-child(10) { animation-delay: 1.5s; }
+        .star:nth-child(11) { animation-delay: 1.67s; }
+        .star:nth-child(12) { animation-delay: 1.83s; }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .fade-in-delay {
+            animation: fadeIn 0.8s ease-out 0.3s forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        .gold-border {
+            border: 2px solid transparent;
+            background: linear-gradient(#ffffff, #ffffff) padding-box,
+                        linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%) border-box;
+        }
+        
+        .icon-container {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.05) 100%);
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 40;
+            animation: overlayFadeIn 1.2s ease-out;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        @keyframes overlayFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .modal-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 3rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: cardOpen 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 2px solid transparent;
+            background: linear-gradient(#ffffff, #ffffff) padding-box,
+                        linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%) border-box;
+        }
+        
+        @keyframes cardOpen {
+            from {
+                opacity: 0;
+                transform: scale(0.7) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1.5rem;
+        }
+        
+        .modal-icon {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-center;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 165, 0, 0.08) 100%);
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .close-button:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+    </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full m-0 p-0 overflow-auto">
+  <div class="eu-gradient w-full h-full flex flex-col items-center justify-center p-8" style="aspect-ratio: 16/9; min-height: 100%;"><!-- EU Stars Circle -->
+   <div class="relative w-24 h-24 mb-6 fade-in">
+    <svg viewbox="0 0 100 100" class="w-full h-full"><g transform="translate(50, 50)"><!-- 12 Stars in a circle -->
+      <g class="star" transform="rotate(0) translate(0, -38)">
+       <polygon points="0,-6 1.5,-2 6,-2 2.5,1 4,5 0,2.5 -4,5 -2.5,1 -6,-2 -1.5,-2" fill="#FFD700" />
+      </g>
+      <g class="star" transform="rotate(30) translate(0, -38)">
+       <polygon points="0,-6 1.5,-2 6,-2 2.5,1 4,5 0,2.5 -4,5 -2.5,1 -6,-2 -1.5,-2" fill="#FFD700" />
+      </g>
+      <g class="star" transform="rotate(60) translate(0, -38)">
+       <polygon points="0,-6 1.5,-2 6,-2 2.5,1 4,5 0,2.5 -4,5 -2.5,1 -6,-2 -1.5,-2" fill="#FFD700" />
+      </g>
+      <g class="star" transform="rotate(90) translate(0, -38)">
+       <polygon points="0,-6 1.5,-2 6,-2 2.5,1 4,5 0,2.5 -4,5 -2.5,1 -6,-2 -1.5,-2" fill="#FFD700" />
+      </g>
+      <g class="star" transform="rotate(120) translate(0, -38)">
+       <polygon points="0,-6 1.5,-2 6,-2 2.5,1 4,5 0,2.5 -4,5 -2.5,1 -6,-2 -1.5,-2" fill="#FFD700" />
+      </g>
+      <g class="star" transform="rotate(150) translate(0, -38)">
+       <polygon points="0,-6 1.5,-2 6,-2 2.5,1 4,5 0,2.5 -4,5 -2.5,1 -6,-2 -1.5,-2" fill="#FFD700" />
+      </g>
+      <g class="star" transform="rotate(180) translate(0, -38)">
+       <polygon points="0,-6 1.5,-2 6,-2 2.5,1 4,5 0,2.5 -4,5 -2.5,1 -6,-2 -1.5,-2" fill="#FFD700" />
+      </g>
+      <g class="star" transform="rotate(210) translate(0, -38)">
+       <polygon points="0,-6 1.5,-2 6,-2 2.5,1 4,5 0,2.5 -4,5 -2.5,1 -6,-2 -1.5,-2" fill="#FFD700" />
+      </g>
+      <g class="star" transform="rotate(240) translate(0, -38)">
+       <polygon points="0,-6 1.5,-2 6,-2 2.5,1 4,5 0,2.5 -4,5 -2.5,1 -6,-2 -1.5,-2" fill="#FFD700" />
+      </g>
+      <g class="star" transform="rotate(270) translate(0, -38)">
+       <polygon points="0,-6 1.5,-2 6,-2 2.5,1 4,5 0,2.5 -4,5 -2.5,1 -6,-2 -1.5,-2" fill="#FFD700" />
+      </g>
+      <g class="star" transform="rotate(300) translate(0, -38)">
+       <polygon points="0,-6 1.5,-2 6,-2 2.5,1 4,5 0,2.5 -4,5 -2.5,1 -6,-2 -1.5,-2" fill="#FFD700" />
+      </g>
+      <g class="star" transform="rotate(330) translate(0, -38)">
+       <polygon points="0,-6 1.5,-2 6,-2 2.5,1 4,5 0,2.5 -4,5 -2.5,1 -6,-2 -1.5,-2" fill="#FFD700" />
+      </g>
+     </g>
+    </svg>
+   </div><!-- Header -->
+   <header class="text-center mb-12 fade-in">
+    <h1 id="main-title" class="text-5xl font-light text-white tracking-wide mb-3">Fondi Europei</h1>
+    <p id="subtitle" class="text-lg text-blue-200 font-light tracking-wider">Seleziona il programma di finanziamento</p>
+   </header><!-- Cards Container -->
+   <main class="flex gap-10 fade-in-delay"><!-- PNRR Card --> <button class="gold-border card-hover rounded-2xl p-8 w-80 text-left cursor-pointer bg-white group focus:outline-none focus:ring-4 focus:ring-yellow-400/50" onclick="openModal('PNRR')">
+     <div class="icon-container w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+      <svg class="w-8 h-8 text-blue-900" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+     </div><h2 id="card1-title" class="text-2xl font-semibold text-blue-900 mb-2">PNRR</h2><p id="card1-description" class="text-gray-600 font-light leading-relaxed">Piano Nazionale di Ripresa e Resilienza</p>
+     <div class="mt-6 flex items-center text-blue-700 font-medium text-sm group-hover:translate-x-2 transition-transform duration-300"><span>Accedi al portale</span>
+      <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+     </div></button> <!-- FESR Card --> <button class="gold-border card-hover rounded-2xl p-8 w-80 text-left cursor-pointer bg-white group focus:outline-none focus:ring-4 focus:ring-yellow-400/50" onclick="openModal('FESR')">
+     <div class="icon-container w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+      <svg class="w-8 h-8 text-blue-900" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+     </div><h2 id="card2-title" class="text-2xl font-semibold text-blue-900 mb-2">FESR</h2><p id="card2-description" class="text-gray-600 font-light leading-relaxed">Fondo Europeo di Sviluppo Regionale</p>
+     <div class="mt-6 flex items-center text-blue-700 font-medium text-sm group-hover:translate-x-2 transition-transform duration-300"><span>Accedi al portale</span>
+      <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+     </div></button>
+   </main><!-- Footer -->
+   <footer class="mt-12 text-center fade-in-delay">
+    <p class="text-blue-300 text-sm font-light tracking-wide">Finanziato dall'Unione Europea — NextGenerationEU</p>
+   </footer>
+  </div><!-- Modal Overlay -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+   <div class="modal-card relative" onclick="event.stopPropagation()">
+    <button class="close-button" onclick="closeModal()">
+     <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+     </svg></button>
+    <div class="modal-header">
+     <div class="modal-icon" id="modalIcon">
+      <svg class="w-8 h-8 text-blue-900" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+     </div>
+     <div>
+      <h2 id="modalTitle" class="text-3xl font-semibold text-blue-900">PNRR</h2>
+      <p id="modalSubtitle" class="text-gray-600 font-light mt-1">Piano Nazionale di Ripresa e Resilienza</p>
+     </div>
+    </div>
+    <div id="modalContent" class="text-gray-700 font-light leading-relaxed min-h-64">
+    </div>
+   </div>
+  </div>
+  <script>
+        // Default configuration
+        const defaultConfig = {
+            main_title: 'Fondi Europei',
+            subtitle: 'Seleziona il programma di finanziamento',
+            card1_title: 'PNRR',
+            card1_description: 'Piano Nazionale di Ripresa e Resilienza',
+            card2_title: 'FESR',
+            card2_description: 'Fondo Europeo di Sviluppo Regionale',
+            primary_color: '#003399',
+            secondary_color: '#FFD700',
+            text_color: '#1e3a5f',
+            card_bg_color: '#ffffff',
+            accent_color: '#1d4ed8'
+        };
+        
+        // Open modal with animation
+        function openModal(cardType) {
+            const overlay = document.getElementById('modalOverlay');
+            const title = document.getElementById('modalTitle');
+            const subtitle = document.getElementById('modalSubtitle');
+            const icon = document.getElementById('modalIcon');
+            
+            if (cardType === 'PNRR') {
+                title.textContent = defaultConfig.card1_title;
+                subtitle.textContent = defaultConfig.card1_description;
+                icon.innerHTML = '<svg class="w-8 h-8 text-blue-900" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>';
+            } else if (cardType === 'FESR') {
+                title.textContent = defaultConfig.card2_title;
+                subtitle.textContent = defaultConfig.card2_description;
+                icon.innerHTML = '<svg class="w-8 h-8 text-blue-900" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+            }
+            
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close modal
+        function closeModal(event) {
+            const overlay = document.getElementById('modalOverlay');
+            if (event && event.target !== overlay) return;
+            
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+        
+        // Initialize Element SDK
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange: async (config) => {
+                    // Update text content
+                    document.getElementById('main-title').textContent = config.main_title || defaultConfig.main_title;
+                    document.getElementById('subtitle').textContent = config.subtitle || defaultConfig.subtitle;
+                    document.getElementById('card1-title').textContent = config.card1_title || defaultConfig.card1_title;
+                    document.getElementById('card1-description').textContent = config.card1_description || defaultConfig.card1_description;
+                    document.getElementById('card2-title').textContent = config.card2_title || defaultConfig.card2_title;
+                    document.getElementById('card2-description').textContent = config.card2_description || defaultConfig.card2_description;
+                },
+                mapToCapabilities: (config) => ({
+                    recolorables: [
+                        {
+                            get: () => config.primary_color || defaultConfig.primary_color,
+                            set: (value) => { config.primary_color = value; window.elementSdk.setConfig({ primary_color: value }); }
+                        },
+                        {
+                            get: () => config.secondary_color || defaultConfig.secondary_color,
+                            set: (value) => { config.secondary_color = value; window.elementSdk.setConfig({ secondary_color: value }); }
+                        },
+                        {
+                            get: () => config.text_color || defaultConfig.text_color,
+                            set: (value) => { config.text_color = value; window.elementSdk.setConfig({ text_color: value }); }
+                        },
+                        {
+                            get: () => config.card_bg_color || defaultConfig.card_bg_color,
+                            set: (value) => { config.card_bg_color = value; window.elementSdk.setConfig({ card_bg_color: value }); }
+                        },
+                        {
+                            get: () => config.accent_color || defaultConfig.accent_color,
+                            set: (value) => { config.accent_color = value; window.elementSdk.setConfig({ accent_color: value }); }
+                        }
+                    ],
+                    borderables: [],
+                    fontEditable: {
+                        get: () => config.font_family || defaultConfig.font_family,
+                        set: (value) => { config.font_family = value; window.elementSdk.setConfig({ font_family: value }); }
+                    },
+                    fontSizeable: undefined
+                }),
+                mapToEditPanelValues: (config) => new Map([
+                    ['main_title', config.main_title || defaultConfig.main_title],
+                    ['subtitle', config.subtitle || defaultConfig.subtitle],
+                    ['card1_title', config.card1_title || defaultConfig.card1_title],
+                    ['card1_description', config.card1_description || defaultConfig.card1_description],
+                    ['card2_title', config.card2_title || defaultConfig.card2_title],
+                    ['card2_description', config.card2_description || defaultConfig.card2_description]
+                ])
+            });
+        }
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d950245c3c7ed53',t:'MTc3MzAwNjEzNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
